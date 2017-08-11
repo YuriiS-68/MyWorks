@@ -14,6 +14,21 @@ public class TransactionDAO {
         return null;
     }
 
+    public Transaction[] transactionList(){
+
+        return null;
+    }
+
+    public Transaction[] transactionList(String city){
+
+        return null;
+    }
+
+    public Transaction[] transactionList(int amount){
+
+        return null;
+    }
+
 
     public Transaction[] getTransactionsPerDay(Date dateOfCurTransaction){
         Calendar calendar = Calendar.getInstance();

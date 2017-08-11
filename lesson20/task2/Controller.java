@@ -8,18 +8,18 @@ public class Controller {
     private Utils utils = new Utils();
 
     public Controller(){
-        utils.setLimitTransactionsPerDayAmount(5);
-        utils.setLimitTransactionsPerDayCount(100);
+        utils.setLimitTransactionsPerDayCount(5);
+        utils.setLimitTransactionsPerDayAmount(100);
         utils.setLimitSimpleTransactionAmount(40);
         utils.setCities(new String[] {"Kiev, Odesa, Mykolayiv"});
     }
-    Transaction saveTransaction(Transaction transaction)throws Exception{
+    public Transaction saveTransaction(Transaction transaction)throws Exception{
         Transaction[] transactions = transactionDAO.getTransactionsPerDay(transaction.getDateCreated());
 
-        if (transaction.getAmount() > utils.getLimitTransactionsPerDayAmount())
+        if (transaction.getAmount() > utils.getLimitTransactionsPerDayCount())
             throw new LimitExceeded("Amount of this transaction exceeded");
 
-        if (transactions.length + 1 > utils.getLimitTransactionsPerDayCount())
+        if (transactions.length + 1 > utils.getLimitTransactionsPerDayAmount())
             throw new LimitExceeded("Count of transactions per day exceeded");
 
         if (transactionsPerDayAmount(transactions) + transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
@@ -34,17 +34,17 @@ public class Controller {
         return transaction;
     }
 
-    Transaction[] allTransactions(){
+    public Transaction[] allTransactions(){
 
         return null;
     }
 
-    Transaction[] allTransactionsByCity(String city){
+    public Transaction[] allTransactionsByCity(String city){
 
         return null;
     }
 
-    Transaction[] allTransactions(int amount){
+    public Transaction[] allTransactions(int amount){
 
         return null;
     }

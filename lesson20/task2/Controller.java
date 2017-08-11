@@ -8,24 +8,23 @@ public class Controller {
     private Utils utils = new Utils();
 
     public Controller(){
-        utils.setLimitTransactionsPerDayCount(5);
-        utils.setLimitTransactionsPerDayAmount(100);
+        utils.setLimitTransactionsPerDayAmount(5);
+        utils.setLimitTransactionsPerDayCount(100);
         utils.setLimitSimpleTransactionAmount(40);
         utils.setCities(new String[] {"Kiev, Odesa, Mykolayiv"});
     }
     Transaction saveTransaction(Transaction transaction)throws Exception{
         Transaction[] transactions = transactionDAO.getTransactionsPerDay(transaction.getDateCreated());
 
-        if (transaction.getAmount() > utils.getLimitTransactionsPerDayCount())
+        if (transaction.getAmount() > utils.getLimitTransactionsPerDayAmount())
             throw new LimitExceeded("Amount of this transaction exceeded");
 
-        if (transactions.length + 1 > utils.getLimitTransactionsPerDayAmount())
+        if (transactions.length + 1 > utils.getLimitTransactionsPerDayCount())
             throw new LimitExceeded("Count of transactions per day exceeded");
 
         if (transactionsPerDayAmount(transactions) + transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
             throw new LimitExceeded("Amount of transactions per day exceeded");
 
-        //TODO
         //- если город оплаты(совершения транзакции) не разрешен
         if (!checkFromCityTransaction(utils.getCities(), transaction))
             throw new BadRequestException("From this city: " + transaction.getCity() + " payment is not possible");

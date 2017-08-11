@@ -15,11 +15,22 @@ public class TransactionDAO {
     }
     private Transaction[] transactions = new Transaction[10];
 
-    public Transaction save(Transaction transaction){
-
+    public Transaction save(Transaction transaction)throws Exception{
         //TODO check and save if ok
+        if (transaction.getAmount() > utils.getLimitTransactionsPerDayCount())
+            throw new LimitExceeded("Amount of this transaction exceeded");
 
-        return null;
+        if (transactions.length + 1 > utils.getLimitTransactionsPerDayAmount())
+            throw new LimitExceeded("Count of transactions per day exceeded");
+
+        if (transactionsPerDayAmount(transactions) + transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
+            throw new LimitExceeded("Amount of transactions per day exceeded");
+
+        //- если город оплаты(совершения транзакции) не разрешен
+        if (!checkFromCityTransaction(utils.getCities(), transaction))
+            throw new BadRequestException("From this city: " + transaction.getCity() + " payment is not possible");
+
+        return transaction;
     }
 
     public Transaction[] transactionList(){
@@ -66,5 +77,22 @@ public class TransactionDAO {
                 result[index] = transaction;
         }
         return result;
+    }
+
+    private boolean checkFromCityTransaction(String[] citiesAllowed, Transaction transaction){
+        for(String city : citiesAllowed){
+            if (transaction.getCity() != null && city.equals(transaction.getCity())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int transactionsPerDayAmount(Transaction[] transactions){
+        int amount = 0;
+        for(Transaction tr : transactions){
+            amount += tr.getAmount();
+        }
+        return amount;
     }
 }

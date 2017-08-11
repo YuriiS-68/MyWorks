@@ -5,7 +5,6 @@ import java.util.Date;
 
 public class TransactionDAO {
 
-    private Controller controller = new Controller();
     private Utils utils = new Utils();
 
     public TransactionDAO() {
@@ -24,14 +23,22 @@ public class TransactionDAO {
         if (transactions.length + 1 > utils.getLimitTransactionsPerDayAmount())
             throw new LimitExceeded("Count of transactions per day exceeded");
 
-        if (controller.transactionsPerDayAmount(transactions) + transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
+        if (transactionsPerDayAmount(transactions) + transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
             throw new LimitExceeded("Amount of transactions per day exceeded");
 
         //- если город оплаты(совершения транзакции) не разрешен
-        if (!controller.checkFromCityTransaction(utils.getCities(), transaction))
+        if (!checkFromCityTransaction(utils.getCities(), transaction))
             throw new BadRequestException("From this city: " + transaction.getCity() + " payment is not possible");
 
-        return transaction;
+        int index = 0;
+        for(Transaction tr : transactions){
+            if (tr == null){
+                transactions[index] = transaction;
+                return transaction;
+            }
+            index++;
+        }
+        throw new InternalServerException("Unexpected error");
     }
 
     public Transaction[] transactionList(){
@@ -78,5 +85,22 @@ public class TransactionDAO {
                 result[index] = transaction;
         }
         return result;
+    }
+
+    private boolean checkFromCityTransaction(String[] citiesAllowed, Transaction transaction){
+        for(String city : citiesAllowed){
+            if (transaction.getCity() != null && city.equals(transaction.getCity())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int transactionsPerDayAmount(Transaction[] transactions){
+        int amount = 0;
+        for(Transaction tr : transactions){
+            amount += tr.getAmount();
+        }
+        return amount;
     }
 }

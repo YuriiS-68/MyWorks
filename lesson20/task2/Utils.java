@@ -37,5 +37,5 @@ public class Utils {
     public void setCities(String[] cities) {
         this.cities = cities;
     }
-    //4
+
 }

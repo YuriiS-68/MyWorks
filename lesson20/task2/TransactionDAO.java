@@ -1,7 +1,5 @@
 package lesson20.task2;
 
-import lesson20.task2.Transaction;
-
 import java.util.Calendar;
 import java.util.Date;
 

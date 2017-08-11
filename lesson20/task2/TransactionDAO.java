@@ -5,6 +5,14 @@ import java.util.Date;
 
 public class TransactionDAO {
 
+    private Utils utils = new Utils();
+
+    public TransactionDAO() {
+        utils.setLimitTransactionsPerDayCount(5);
+        utils.setLimitTransactionsPerDayAmount(100);
+        utils.setLimitSimpleTransactionAmount(40);
+        utils.setCities(new String[]{"Kiev, Odesa, Mykolayiv"});
+    }
     private Transaction[] transactions = new Transaction[10];
 
     public Transaction save(Transaction transaction){

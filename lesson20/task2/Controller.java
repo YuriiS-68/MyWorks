@@ -49,7 +49,7 @@ public class Controller {
         return null;
     }
 
-    private boolean checkFromCityTransaction(String[] citiesAllowed, Transaction transaction){
+    public boolean checkFromCityTransaction(String[] citiesAllowed, Transaction transaction){
         for(String city : citiesAllowed){
             if (transaction.getCity() != null && city.equals(transaction.getCity())){
                 return true;
@@ -58,7 +58,7 @@ public class Controller {
         return false;
     }
 
-    private int transactionsPerDayAmount(Transaction[] transactions){
+    public int transactionsPerDayAmount(Transaction[] transactions){
         int amount = 0;
         for(Transaction tr : transactions){
             amount += tr.getAmount();

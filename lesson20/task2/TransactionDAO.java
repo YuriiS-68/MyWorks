@@ -8,17 +8,23 @@ public class TransactionDAO {
     private Transaction[] transactions = new Transaction[10];
     private Utils utils = new Utils();
 
-    public Transaction save(Transaction transaction){
+    public Transaction save(Transaction transaction)throws Exception {
         //сумма транзакции больше указанного лимита
         //сумма транзакций за день больше дневного лимита
         //количество транзакций за день больше указанного лимита
         //если город оплаты (совершения транзакции) не разрешен
         //не хватило места
         int index = 0;
-        for(Transaction tr : transactions){
-
+        if (validate(transaction)) {
+            for(Transaction tr : transactions){
+                if (tr == null){
+                    transactions[index] = transaction;
+                    return transactions[index];
+                }
+                index++;
+            }
         }
-        return transaction;
+        throw new BadRequestException("Unexpected error");
     }
 
     private boolean validate(Transaction transaction) throws Exception{
@@ -41,9 +47,20 @@ public class TransactionDAO {
         if (!checkCity(transaction))
             throw new InternalServerException("A transaction from city: " + transaction.getCity() + " is not possible");
 
-        if (transactions.length + 1 > transactions.length )
+        if (!checkIsFull(transactions))
             throw new BadRequestException("unexpected error");
 
+        return true;
+    }
+
+    private boolean checkIsFull(Transaction[] transactions){
+        int index = 0;
+        for(Transaction tr : transactions){
+            if (tr != null){
+                return false;
+            }
+            index++;
+        }
         return true;
     }
 

@@ -5,40 +5,55 @@ import java.util.Date;
 
 public class TransactionDAO {
 
+    private Transaction[] transactions = new Transaction[10];
     private Utils utils = new Utils();
 
-    public TransactionDAO() {
-        utils.setLimitTransactionsPerDayCount(5);
-        utils.setLimitTransactionsPerDayAmount(100);
-        utils.setLimitSimpleTransactionAmount(40);
-        utils.setCities(new String[]{"Kiev, Odesa, Mykolayiv"});
-    }
-    private Transaction[] transactions = new Transaction[10];
-
-    public Transaction save(Transaction transaction)throws Exception{
-        //TODO check and save if ok
-        if (transaction.getAmount() > utils.getLimitTransactionsPerDayCount())
-            throw new LimitExceeded("Amount of this transaction exceeded");
-
-        if (transactions.length + 1 > utils.getLimitTransactionsPerDayAmount())
-            throw new LimitExceeded("Count of transactions per day exceeded");
-
-        if (transactionsPerDayAmount(transactions) + transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
-            throw new LimitExceeded("Amount of transactions per day exceeded");
-
-        //- если город оплаты(совершения транзакции) не разрешен
-        if (!checkFromCityTransaction(utils.getCities(), transaction))
-            throw new BadRequestException("From this city: " + transaction.getCity() + " payment is not possible");
-
+    public Transaction save(Transaction transaction){
+        //сумма транзакции больше указанного лимита
+        //сумма транзакций за день больше дневного лимита
+        //количество транзакций за день больше указанного лимита
+        //если город оплаты (совершения транзакции) не разрешен
+        //не хватило места
         int index = 0;
         for(Transaction tr : transactions){
-            if (tr == null){
-                transactions[index] = transaction;
-                return transaction;
-            }
-            index++;
+
         }
-        throw new InternalServerException("Unexpected error");
+        return transaction;
+    }
+
+    private boolean validate(Transaction transaction) throws Exception{
+        if (transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
+            throw new LimitExceeded("Transaction limit exceeded " + transaction.getId() + ". Can`t be saved");
+
+        int sum = 0;
+        int count = 0;
+        for(Transaction tr : getTransactionsPerDay(transaction.getDateCreated())){
+            sum += tr.getAmount();
+            count++;
+        }
+
+        if (sum > utils.getLimitTransactionsPerDayAmount())
+            throw new LimitExceeded("Transaction limit per day amount exceeded " + transaction.getId() + ". Can`t be saved");
+
+        if (count > utils.getLimitTransactionsPerDayCount())
+            throw new LimitExceeded("Transaction limit per day count exceeded " + transaction.getId() + ". Can`t be saved");
+
+        if (!checkCity(transaction))
+            throw new InternalServerException("A transaction from city: " + transaction.getCity() + " is not possible");
+
+        if (transactions.length + 1 > transactions.length )
+            throw new BadRequestException("unexpected error");
+
+        return true;
+    }
+
+    private boolean checkCity(Transaction transaction)throws InternalServerException{
+        for(String city : utils.getCities()){
+            if (city != null && city.equals(transaction.getCity())){
+                return true;
+            }
+        }
+        return false;
     }
 
     public Transaction[] transactionList(){
@@ -66,41 +81,30 @@ public class TransactionDAO {
 
         int count = 0;
         for(Transaction transaction : transactions){
-            calendar.setTime(transaction.getDateCreated());
-            int trMonth = calendar.get(Calendar.MONTH);
-            int trDay = calendar.get(Calendar.DAY_OF_MONTH);
+            if (transaction != null) {
+                calendar.setTime(transaction.getDateCreated());
+                int trMonth = calendar.get(Calendar.MONTH);
+                int trDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-            if (trMonth == month && trDay == day)
-                count++;
+                if (trMonth == month && trDay == day)
+                    count++;
+            }
         }
 
         Transaction[] result = new Transaction[count];
         int index = 0;
         for(Transaction transaction : transactions){
-            calendar.setTime(transaction.getDateCreated());
-            int trMonth = calendar.get(Calendar.MONTH);
-            int trDay = calendar.get(Calendar.DAY_OF_MONTH);
+            if (transaction != null) {
+                calendar.setTime(transaction.getDateCreated());
+                int trMonth = calendar.get(Calendar.MONTH);
+                int trDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-            if (trMonth == month && trDay == day)
-                result[index] = transaction;
-        }
-        return result;
-    }
-
-    private boolean checkFromCityTransaction(String[] citiesAllowed, Transaction transaction){
-        for(String city : citiesAllowed){
-            if (transaction.getCity() != null && city.equals(transaction.getCity())){
-                return true;
+                if (trMonth == month && trDay == day) {
+                    result[index] = transaction;
+                    index++;
+                }
             }
         }
-        return false;
-    }
-
-    private int transactionsPerDayAmount(Transaction[] transactions){
-        int amount = 0;
-        for(Transaction tr : transactions){
-            amount += tr.getAmount();
-        }
-        return amount;
+        return result;
     }
 }

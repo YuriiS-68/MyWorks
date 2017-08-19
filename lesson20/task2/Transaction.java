@@ -3,6 +3,7 @@ package lesson20.task2;
 import java.util.Date;
 
 public class Transaction {
+
     private long id;
     private String city;
     private int amount;
@@ -10,7 +11,7 @@ public class Transaction {
     private TransactionType type;
     private Date dateCreated;
 
-    public Transaction(long id, String city, int amount, String description, TransactionType type, Date dateCreated) {
+    public Transaction(long id, String city, int amount, String description, TransactionType type, Date dateCreated)throws InternalServerException {
         this.id = id;
         this.city = city;
         this.amount = amount;

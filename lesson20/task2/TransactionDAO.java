@@ -24,7 +24,7 @@ public class TransactionDAO {
                 index++;
             }
         }
-        throw new BadRequestException("Unexpected error");
+        throw new InternalServerException("Unexpected error");
     }
 
     private boolean validate(Transaction transaction) throws Exception{
@@ -45,10 +45,10 @@ public class TransactionDAO {
             throw new LimitExceeded("Transaction limit per day count exceeded " + transaction.getId() + ". Can`t be saved");
 
         if (!checkCity(transaction))
-            throw new InternalServerException("A transaction from city: " + transaction.getCity() + " is not possible");
+            throw new BadRequestException("A transaction from city: " + transaction.getCity() + " is not possible");
 
         if (!checkIsFull(transactions))
-            throw new BadRequestException("unexpected error");
+            throw new InternalServerException("unexpected error");
 
         return true;
     }

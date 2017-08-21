@@ -1,33 +1,37 @@
 package lesson20.task2;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 public class TransactionDAO {
 
-    private Transaction[] transactions = new Transaction[10];
+    private Transaction[] transactions = new Transaction[2];
     private Utils utils = new Utils();
 
-    public Transaction save(Transaction transaction)throws Exception {
+    public Transaction save(Transaction transaction) throws Exception{
+        //проверить есть ли уже такая транзакция в массиве и если нет, то сохранить
+
+        if (checkTransaction(transactions, transaction))
+            throw new InternalServerException("Such transaction " + transaction.getId() + " already exists");
+        System.out.println(checkTransaction(transactions, transaction));
+
+        for (int i = 0; i < transactions.length; i++) {
+            if (validate(transaction) && transactions[i] == null){
+                transactions[i] = transaction;
+                return transactions[i];
+            }
+        }
+        throw new InternalServerException("unexpected error");
+    }
+
+    public boolean validate(Transaction transaction) throws Exception{
         //сумма транзакции больше указанного лимита
         //сумма транзакций за день больше дневного лимита
         //количество транзакций за день больше указанного лимита
         //если город оплаты (совершения транзакции) не разрешен
         //не хватило места
-        int index = 0;
-        if (validate(transaction)) {
-            for(Transaction tr : transactions){
-                if (tr == null){
-                    transactions[index] = transaction;
-                    return transactions[index];
-                }
-                index++;
-            }
-        }
-        throw new InternalServerException("Unexpected error");
-    }
 
-    private boolean validate(Transaction transaction) throws Exception{
         if (transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
             throw new LimitExceeded("Transaction limit exceeded " + transaction.getId() + ". Can`t be saved");
 
@@ -53,13 +57,30 @@ public class TransactionDAO {
         return true;
     }
 
-    private boolean checkIsFull(Transaction[] transactions){
+    private boolean checkTransaction(Transaction[] transactions, Transaction transaction){
+        if (transactions == null || transaction == null){
+            return false;
+        }
+
         int index = 0;
         for(Transaction tr : transactions){
-            if (tr != null){
-                return false;
+            if (tr != null && transaction.equals(tr)){
+                return true;
             }
             index++;
+        }
+        return false;
+    }
+
+    private boolean checkIsFull(Transaction[] transactions){
+        if (transactions == null){
+            return false;
+        }
+
+        for (int i = 0; i < transactions.length; i++) {
+            if (transactions[i] != null){
+                return false;
+            }
         }
         return true;
     }

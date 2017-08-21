@@ -10,19 +10,25 @@ public class TransactionDAO {
     private Utils utils = new Utils();
 
     public Transaction save(Transaction transaction) throws Exception{
+        //если транзакция проходит валидацию, то сохранять
         //проверить есть ли уже такая транзакция в массиве и если нет, то сохранить
 
         if (checkTransaction(transactions, transaction))
             throw new InternalServerException("Such transaction " + transaction.getId() + " already exists");
         System.out.println(checkTransaction(transactions, transaction));
 
-        for (int i = 0; i < transactions.length; i++) {
-            if (validate(transaction) && transactions[i] == null){
-                transactions[i] = transaction;
-                return transactions[i];
-            }
-        }
+        if (!validate(transaction))
         throw new InternalServerException("unexpected error");
+
+        int index = 0;
+        for(Transaction tr : transactions){
+            if (tr == null){
+                transactions[index] = transaction;
+                break;
+            }
+            index++;
+        }
+        return transactions[index];
     }
 
     public boolean validate(Transaction transaction) throws Exception{
@@ -49,10 +55,10 @@ public class TransactionDAO {
             throw new LimitExceeded("Transaction limit per day count exceeded " + transaction.getId() + ". Can`t be saved");
 
         if (!checkCity(transaction))
-            throw new BadRequestException("A transaction from city: " + transaction.getCity() + " is not possible");
+            throw new InternalServerException("A transaction from city: " + transaction.getCity() + " is not possible");
 
         if (!checkIsFull(transactions))
-            throw new InternalServerException("unexpected error");
+            throw new BadRequestException("Storage " + Arrays.toString(transactions) + " is full");
 
         return true;
     }

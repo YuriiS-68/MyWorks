@@ -12,10 +12,11 @@ public class TransactionDAO {
     public Transaction save(Transaction transaction) throws Exception{
         //если транзакция проходит валидацию, то сохранять
         //проверить есть ли уже такая транзакция в массиве и если нет, то сохранить
+        if (transaction == null)
+            throw new InternalServerException("unexpected error");
 
         if (checkTransaction(transactions, transaction))
             throw new InternalServerException("Such transaction " + transaction.getId() + " already exists");
-        //System.out.println(checkTransaction(transactions, transaction));
 
         if (!validate(transaction))
         throw new InternalServerException("unexpected error");
@@ -28,7 +29,6 @@ public class TransactionDAO {
             }
             index++;
         }
-        //System.out.println(Arrays.toString(transactions));
         return transactions[index];
     }
 

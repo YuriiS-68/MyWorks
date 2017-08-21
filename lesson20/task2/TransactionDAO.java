@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class TransactionDAO {
 
-    private Transaction[] transactions = new Transaction[3];
+    private Transaction[] transactions = new Transaction[10];
     private Utils utils = new Utils();
 
     public Transaction save(Transaction transaction) throws Exception{
@@ -15,7 +15,7 @@ public class TransactionDAO {
 
         if (checkTransaction(transactions, transaction))
             throw new InternalServerException("Such transaction " + transaction.getId() + " already exists");
-        System.out.println(checkTransaction(transactions, transaction));
+        //System.out.println(checkTransaction(transactions, transaction));
 
         if (!validate(transaction))
         throw new InternalServerException("unexpected error");
@@ -28,7 +28,7 @@ public class TransactionDAO {
             }
             index++;
         }
-        System.out.println(Arrays.toString(transactions));
+        //System.out.println(Arrays.toString(transactions));
         return transactions[index];
     }
 
@@ -168,12 +168,12 @@ public class TransactionDAO {
 
         int index = 0;
         for (Transaction transaction : transactions) {
-            if (transaction != null){
-                transactions[index] = transaction;
+            if (transaction == null){
+                return true;
             }
             index++;
         }
-        return true;
+        return false;
     }
 
     private boolean checkCity(Transaction transaction)throws InternalServerException{

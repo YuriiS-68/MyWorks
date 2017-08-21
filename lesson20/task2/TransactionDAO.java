@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class TransactionDAO {
 
-    private Transaction[] transactions = new Transaction[2];
+    private Transaction[] transactions = new Transaction[3];
     private Utils utils = new Utils();
 
     public Transaction save(Transaction transaction) throws Exception{
@@ -28,6 +28,7 @@ public class TransactionDAO {
             }
             index++;
         }
+        System.out.println(Arrays.toString(transactions));
         return transactions[index];
     }
 
@@ -63,56 +64,49 @@ public class TransactionDAO {
         return true;
     }
 
-    private boolean checkTransaction(Transaction[] transactions, Transaction transaction){
-        if (transactions == null || transaction == null){
-            return false;
+    public Transaction[] transactionList(){
+        if (transactions == null){
+            return null;
         }
 
         int index = 0;
-        for(Transaction tr : transactions){
-            if (tr != null && transaction.equals(tr)){
-                return true;
+        for (Transaction transaction : transactions) {
+            if (transaction != null){
+                transactions[index] = transaction;
             }
             index++;
         }
-        return false;
-    }
-
-    private boolean checkIsFull(Transaction[] transactions){
-        if (transactions == null){
-            return false;
-        }
-
-        for (int i = 0; i < transactions.length; i++) {
-            if (transactions[i] != null){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean checkCity(Transaction transaction)throws InternalServerException{
-        for(String city : utils.getCities()){
-            if (city != null && city.equals(transaction.getCity())){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Transaction[] transactionList(){
-
-        return null;
+        return transactions;
     }
 
     public Transaction[] transactionList(String city){
+        if (transactions == null || city == null){
+            return null;
+        }
 
-        return null;
+        int index = 0;
+        for (Transaction transaction : transactions) {
+            if (transaction != null && city.equals(transaction.getCity())){
+                transactions[index] = transaction;
+            }
+            index++;
+        }
+        return transactions;
     }
 
     public Transaction[] transactionList(int amount){
+        if (transactions == null){
+            return null;
+        }
 
-        return null;
+        int index = 0;
+        for (Transaction transaction : transactions) {
+            if (transaction != null && amount == transaction.getAmount()){
+                transactions[index] = transaction;
+            }
+            index++;
+        }
+        return transactions;
     }
 
 
@@ -150,5 +144,48 @@ public class TransactionDAO {
             }
         }
         return result;
+    }
+
+    private boolean checkTransaction(Transaction[] transactions, Transaction transaction){
+        if (transactions == null || transaction == null){
+            return false;
+        }
+
+        int index = 0;
+        for(Transaction tr : transactions){
+            if (tr != null && transaction.equals(tr)){
+                return true;
+            }
+            index++;
+        }
+        return false;
+    }
+
+    private boolean checkIsFull(Transaction[] transactions){
+        if (transactions == null){
+            return false;
+        }
+
+        int index = 0;
+        for (Transaction transaction : transactions) {
+            if (transaction != null){
+                transactions[index] = transaction;
+            }
+            index++;
+        }
+        return true;
+    }
+
+    private boolean checkCity(Transaction transaction)throws InternalServerException{
+        if (transaction == null){
+            return false;
+        }
+
+        for(String city : utils.getCities()){
+            if (city != null && city.equals(transaction.getCity())){
+                return true;
+            }
+        }
+        return false;
     }
 }

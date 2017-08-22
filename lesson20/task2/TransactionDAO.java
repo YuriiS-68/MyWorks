@@ -19,7 +19,7 @@ public class TransactionDAO {
             throw new InternalServerException("Such transaction " + transaction.getId() + " already exists");
 
         if (!validate(transaction))
-        throw new InternalServerException("unexpected error");
+        throw new BadRequestException("unexpected error");
 
         int index = 0;
         for(Transaction tr : transactions){
@@ -56,10 +56,10 @@ public class TransactionDAO {
             throw new LimitExceeded("Transaction limit per day count exceeded " + transaction.getId() + ". Can`t be saved");
 
         if (!checkCity(transaction))
-            throw new InternalServerException("A transaction from city: " + transaction.getCity() + " is not possible");
+            throw new BadRequestException("A transaction from city: " + transaction.getCity() + " is not possible");
 
         if (!checkIsFull(transactions))
-            throw new BadRequestException("Storage " + Arrays.toString(transactions) + " is full");
+            throw new InternalServerException("Storage " + Arrays.toString(transactions) + " is full");
 
         return true;
     }

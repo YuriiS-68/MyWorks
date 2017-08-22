@@ -16,10 +16,10 @@ public class TransactionDAO {
             throw new BadRequestException("unexpected error");
 
         if (checkTransaction(transactions, transaction))
-            throw new InternalServerException("Such transaction " + transaction.getId() + " already exists");
+            throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
 
         if (!validate(transaction))
-            throw new BadRequestException("unexpected error");
+            throw new InternalServerException("unexpected error");
 
         int index = 0;
         for(Transaction tr : transactions){

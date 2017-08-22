@@ -20,9 +20,6 @@ public class TransactionDAO {
         if (transaction == null)
             throw new BadRequestException("unexpected error");
 
-        if (checkTransaction(transactions, transaction))
-            throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
-
         if (!validate(transaction))
             throw new InternalServerException("unexpected error");
 
@@ -62,6 +59,9 @@ public class TransactionDAO {
 
         if (!checkCity(transaction))
             throw new BadRequestException("A transaction from city: " + transaction.getCity() + " is not possible");
+
+        if (checkTransaction(transactions, transaction))
+            throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
 
         if (!checkIsFull(transactions))
             throw new InternalServerException("Storage " + Arrays.toString(transactions) + " is full");

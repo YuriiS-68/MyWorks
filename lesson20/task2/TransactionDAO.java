@@ -13,13 +13,13 @@ public class TransactionDAO {
         //если транзакция проходит валидацию, то сохранять
         //проверить есть ли уже такая транзакция в массиве и если нет, то сохранить
         if (transaction == null)
-            throw new InternalServerException("unexpected error");
+            throw new BadRequestException("unexpected error");
 
         if (checkTransaction(transactions, transaction))
             throw new InternalServerException("Such transaction " + transaction.getId() + " already exists");
 
         if (!validate(transaction))
-            throw new Exception("unexpected error");
+            throw new BadRequestException("unexpected error");
 
         int index = 0;
         for(Transaction tr : transactions){
@@ -88,6 +88,7 @@ public class TransactionDAO {
         for (Transaction transaction : transactions) {
             if (transaction != null && city.equals(transaction.getCity())){
                 transactions[index] = transaction;
+                break;
             }
             index++;
         }
@@ -103,6 +104,7 @@ public class TransactionDAO {
         for (Transaction transaction : transactions) {
             if (transaction != null && amount == transaction.getAmount()){
                 transactions[index] = transaction;
+                break;
             }
             index++;
         }

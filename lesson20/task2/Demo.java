@@ -4,10 +4,11 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class Demo {
-    public static void main(String[] args) {
+    public static void main(String[] args)throws Exception {
 
-        TransactionDAO transactionDAO = new TransactionDAO();
-        try {
+        Controller controller = new Controller();
+        //TransactionDAO transactionDAO = new TransactionDAO();
+        //try {
             Transaction transaction = new Transaction(1111, "Odessa", 20, "good", TransactionType.INCOME, new Date());
             Transaction transaction1 = new Transaction(2222, "Kiev", 5, "good", TransactionType.OUTCOME, new Date());
             Transaction transaction2 = new Transaction(3333, "Odessa", 5, "good", TransactionType.INCOME, new Date());
@@ -25,14 +26,15 @@ public class Demo {
             //transactionDAO.save(transaction2);
             //transactionDAO.save(transaction3);
             //transactionDAO.save(transaction4);
-            System.out.println(transactionDAO.save(transaction));
-            System.out.println(transactionDAO.save(transaction1));
-            System.out.println(transactionDAO.save(transaction2));
-            System.out.println(transactionDAO.save(transaction3));
-            System.out.println(transactionDAO.save(transaction4));
-            System.out.println();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+            System.out.println(controller.transactionDAO.save(transaction));
+            System.out.println(controller.transactionDAO.save(transaction1));
+            System.out.println(controller.transactionDAO.save(transaction2));
+            System.out.println(controller.transactionDAO.save(transaction3));
+            System.out.println(controller.transactionDAO.save(transaction4));
+            controller.transactionDAO.transactionList();
+            System.out.println(Arrays.toString(controller.transactionDAO.transactions));
+        //}catch (Exception e){
+        //    e.printStackTrace();
+        //}
     }
 }

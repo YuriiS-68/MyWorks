@@ -19,7 +19,7 @@ public class TransactionDAO {
             throw new InternalServerException("Such transaction " + transaction.getId() + " already exists");
 
         if (!validate(transaction))
-        throw new BadRequestException("unexpected error");
+            throw new Exception("unexpected error");
 
         int index = 0;
         for(Transaction tr : transactions){
@@ -176,13 +176,13 @@ public class TransactionDAO {
         return false;
     }
 
-    private boolean checkCity(Transaction transaction)throws InternalServerException{
+    private boolean checkCity(Transaction transaction){
         if (transaction == null){
             return false;
         }
 
-        for(String city : utils.getCities()){
-            if (city != null && city.equals(transaction.getCity())){
+        for (String city : utils.getCities()) {
+            if (city != null && city.equals(transaction.getCity())) {
                 return true;
             }
         }

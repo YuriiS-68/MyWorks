@@ -6,7 +6,12 @@ import java.util.Date;
 
 public class TransactionDAO {
 
-    public Transaction[] transactions = new Transaction[10];
+    private Transaction[] transactions = new Transaction[10];
+
+    public Transaction[] getTransactions() {
+        return transactions;
+    }
+
     private Utils utils = new Utils();
 
     public Transaction save(Transaction transaction) throws Exception{
@@ -15,8 +20,8 @@ public class TransactionDAO {
         if (transaction == null)
             throw new BadRequestException("unexpected error");
 
-        //if (checkTransaction(transactions, transaction))
-        //    throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
+        if (checkTransaction(transactions, transaction))
+            throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
 
         if (!validate(transaction))
             throw new InternalServerException("unexpected error");
@@ -71,7 +76,7 @@ public class TransactionDAO {
 
         int index = 0;
         for (Transaction transaction : transactions) {
-            if (transaction != null){
+            if (transaction != null && transaction.getType() == TransactionType.INCOME && transaction.getType() == TransactionType.OUTCOME){
                 transactions[index] = transaction;
             }
             index++;
@@ -86,12 +91,11 @@ public class TransactionDAO {
 
         int index = 0;
         for (Transaction transaction : transactions) {
-            if (transaction != null && city.equals(transaction.getCity())){
+            if (transaction != null && city.equals(transaction.getCity())&& transaction.getType() == TransactionType.INCOME && transaction.getType() == TransactionType.OUTCOME ){
                 transactions[index] = transaction;
             }
             index++;
         }
-        System.out.println(Arrays.toString(transactions));
         return transactions;
     }
 
@@ -102,9 +106,8 @@ public class TransactionDAO {
 
         int index = 0;
         for (Transaction transaction : transactions) {
-            if (transaction != null && amount == transaction.getAmount()){
+            if (transaction != null && amount == transaction.getAmount() && transaction.getType() == TransactionType.INCOME && transaction.getType() == TransactionType.OUTCOME){
                 transactions[index] = transaction;
-                break;
             }
             index++;
         }

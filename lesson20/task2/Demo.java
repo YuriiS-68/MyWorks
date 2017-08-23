@@ -11,7 +11,7 @@ public class Demo {
         Transaction transaction = new Transaction(1111, "Odessa", 15, "good", TransactionType.INCOME, new Date());
         Transaction transaction1 = new Transaction(2222, "Kiev", 30, "good", TransactionType.OUTCOME, new Date());
         Transaction transaction2 = new Transaction(3333, "Odessa", 5, "good", TransactionType.INCOME, new Date());
-        Transaction transaction3 = new Transaction(4444, "Odessa", 38, "good", TransactionType.OUTCOME, new Date());
+        Transaction transaction3 = new Transaction(4444, "Odessa", 25, "good", TransactionType.OUTCOME, new Date());
         Transaction transaction4 = new Transaction(5555, "Odessa", 5, "good", TransactionType.INCOME, new Date());
         Transaction transaction5 = new Transaction(6666, "Kiev", 10, "good", TransactionType.OUTCOME, new Date());
         Transaction transaction6 = new Transaction(7777, "Odessa", 5, "good", TransactionType.INCOME, new Date());
@@ -34,9 +34,10 @@ public class Demo {
 
         System.out.println();
         controller.transactionList();
+        //System.out.println(Arrays.toString(controller.transactionDAO.transactionList()));
         System.out.println();
-        controller.transactionList("Kiev");
-        //System.out.println(Arrays.toString(controller.transactionDAO.transactions));
+        //controller.transactionList("Kiev");
+        //System.out.println(Arrays.toString(controller.transactionDAO.transactionList("Odessa")));
 
     }
 }

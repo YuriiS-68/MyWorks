@@ -64,7 +64,7 @@ public class TransactionDAO {
             throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
 
         if (!checkIsFull(transactions))
-            throw new InternalServerException("Storage " + transaction.getId() + " is full");
+            throw new InternalServerException("Can not save transaction " + transaction.getId() + " storage is full");
 
         return true;
     }
@@ -77,19 +77,18 @@ public class TransactionDAO {
         int count = 0;
         for (Transaction transaction : transactions) {
             if (transaction != null){
-                transactions[count] = transaction;
+                count++;
             }
-            count++;
         }
 
+        System.out.println(count);
         Transaction[] result = new Transaction[count];
-        for (int i = 0; i < transactions.length; i++) {
-            for (int j = 0; j < result.length; j++) {
-                if (transactions[i] != null && result[j] == null && !transactions[i].equals(result[j])){
-                    result[j] = transactions[i];
-                    break;
-                }
+        int index = 0;
+        for (Transaction tr : transactions) {
+            if (tr != null){
+                result[index] = tr;
             }
+            index++;
         }
         return result;
     }

@@ -64,7 +64,7 @@ public class TransactionDAO {
             throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
 
         if (!checkIsFull(transactions))
-            throw new InternalServerException("Storage " + Arrays.toString(transactions) + " is full");
+            throw new InternalServerException("Storage " + transaction.getId() + " is full");
 
         return true;
     }

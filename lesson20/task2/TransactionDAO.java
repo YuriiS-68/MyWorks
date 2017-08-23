@@ -25,11 +25,11 @@ public class TransactionDAO {
         for(Transaction tr : transactions){
             if (tr == null){
                 transactions[index] = transaction;
-                break;
+                return transactions[index];
             }
             index++;
         }
-        return transactions[index];
+        return null;
     }
 
     public void validate(Transaction transaction) throws Exception{

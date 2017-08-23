@@ -19,18 +19,21 @@ public class TransactionDAO {
         if (transaction == null)
             throw new BadRequestException("NullPointer");
 
-        checkTransaction(transaction);
         validate(transaction);
 
-        int index = 0;
-        for(Transaction tr : transactions){
-            if (tr == null){
-                transactions[index] = transaction;
-                return transactions[index];
+        for (Transaction tr : transactions) {
+            if (tr != null && tr.equals(transaction)){
+                throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
             }
-            index++;
         }
-        throw new InternalServerException("Can not save " +transaction.getId() + " transaction");
+
+        for(int i = 0; i < transactions.length; i++){
+            if (transactions[i] == null){
+                transactions[i] = transaction;
+                return transactions[i];
+            }
+        }
+        return null;
     }
 
     public void validate(Transaction transaction) throws Exception{
@@ -50,7 +53,7 @@ public class TransactionDAO {
             count++;
         }
 
-        if (transaction.getAmount() + sum > utils.getLimitTransactionsPerDayAmount())
+        if (sum + transaction.getAmount() > utils.getLimitTransactionsPerDayAmount())
             throw new LimitExceeded("Transaction limit per day amount exceeded " + transaction.getId() + ". Can`t be saved");
 
         if ((count + 1) > utils.getLimitTransactionsPerDayCount())
@@ -168,16 +171,6 @@ public class TransactionDAO {
             }
         }
         return result;
-    }
-
-    private void checkTransaction(Transaction transaction)throws Exception{
-        int index = 0;
-        for(Transaction tr : transactions){
-            if (tr != null && transaction.equals(tr)){
-                throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
-            }
-            index++;
-        }
     }
 
     private int checkIsFull(){

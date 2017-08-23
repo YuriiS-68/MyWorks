@@ -19,6 +19,7 @@ public class TransactionDAO {
         if (transaction == null)
             return null;
 
+        checkTransaction(transaction);
         validate(transaction);
 
         int index = 0;
@@ -58,11 +59,9 @@ public class TransactionDAO {
         if (!checkCity(transaction))
             throw new BadRequestException("A transaction " + transaction.getCity() + " from city: " + transaction.getCity() + " is not possible");
 
-        if (checkTransaction(transactions, transaction))
-            throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
-
         if (checkIsFull() == 0)
             throw new InternalServerException("Can not save transaction " + transaction.getId() + " storage is full");
+
     }
 
     public Transaction[] transactionList(){
@@ -171,23 +170,17 @@ public class TransactionDAO {
         return result;
     }
 
-    private boolean checkTransaction(Transaction[] transactions, Transaction transaction){
-        if (transactions == null || transaction == null){
-            return false;
-        }
-
+    private void checkTransaction(Transaction transaction)throws Exception{
         int index = 0;
         for(Transaction tr : transactions){
             if (tr != null && transaction.equals(tr)){
-                return true;
+                throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
             }
             index++;
         }
-        return false;
     }
 
     private int checkIsFull(){
-
         int index = 0;
         int countNull = 0;
         for (Transaction transaction : transactions) {

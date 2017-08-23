@@ -17,7 +17,7 @@ public class TransactionDAO {
         //если транзакция проходит валидацию, то сохранять
         //проверить есть ли уже такая транзакция в массиве и если нет, то сохранить
         if (transaction == null)
-            return null;
+            throw new BadRequestException("NullPointer");
 
         checkTransaction(transaction);
         validate(transaction);

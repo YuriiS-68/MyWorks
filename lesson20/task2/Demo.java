@@ -27,9 +27,9 @@ public class Demo {
         System.out.println(controller.save(transaction4));
         System.out.println(controller.save(transaction5));
         System.out.println(controller.save(transaction6));
-        //System.out.println(controller.save(transaction7));
-        //System.out.println(controller.save(transaction8));
-        //System.out.println(controller.save(transaction9));
+        System.out.println(controller.save(transaction7));
+        System.out.println(controller.save(transaction8));
+        System.out.println(controller.save(transaction9));
         //System.out.println(controller.save(transaction10));
 
        /* System.out.println();

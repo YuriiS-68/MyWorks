@@ -17,7 +17,7 @@ public class TransactionDAO {
         //если транзакция проходит валидацию, то сохранять
         //проверить есть ли уже такая транзакция в массиве и если нет, то сохранить
         if (transaction == null)
-            throw new BadRequestException("unexpected error");
+            return null;
 
         validate(transaction);
 
@@ -29,7 +29,7 @@ public class TransactionDAO {
             }
             index++;
         }
-        return null;
+        throw new InternalServerException("Can not save " +transaction.getId() + " transaction");
     }
 
     public void validate(Transaction transaction) throws Exception{

@@ -61,7 +61,7 @@ public class TransactionDAO {
         if (checkTransaction(transactions, transaction))
             throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
 
-        if (!checkIsFull(transactions))
+        if (checkIsFull() == 0)
             throw new InternalServerException("Can not save transaction " + transaction.getId() + " storage is full");
     }
 
@@ -186,19 +186,17 @@ public class TransactionDAO {
         return false;
     }
 
-    private boolean checkIsFull(Transaction[] transactions){
-        if (transactions == null){
-            return false;
-        }
+    private int checkIsFull(){
 
         int index = 0;
+        int countNull = 0;
         for (Transaction transaction : transactions) {
             if (transaction == null){
-                return true;
+                countNull++;
             }
             index++;
         }
-        return false;
+        return countNull;
     }
 
     private boolean checkCity(Transaction transaction){

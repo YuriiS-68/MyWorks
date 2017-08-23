@@ -1,12 +1,11 @@
 package lesson20.task2;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 public class TransactionDAO {
 
-    private Transaction[] transactions = new Transaction[10];
+    public Transaction[] transactions = new Transaction[10];
 
     public Transaction[] getTransactions() {
         return transactions;
@@ -109,14 +108,14 @@ public class TransactionDAO {
         for (Transaction tr : transactions) {
             if (tr != null && tr.getCity().equals(city)){
                 result[index] = tr;
+                index++;
             }
-            index++;
         }
         return result;
     }
 
     public Transaction[] transactionList(int amount){
-        if (transactions == null){
+        if (transactions == null || amount == 0){
             return null;
         }
 
@@ -132,8 +131,8 @@ public class TransactionDAO {
         for (Transaction tr : transactions) {
             if (tr != null && amount == tr.getAmount()){
                 result[index] = tr;
+                index++;
             }
-            index++;
         }
         return result;
     }

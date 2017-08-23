@@ -7,7 +7,6 @@ public class Demo {
     public static void main(String[] args)throws Exception {
 
         Controller controller = new Controller();
-        //TransactionDAO transactionDAO = new TransactionDAO();
 
         Transaction transaction = new Transaction(1111, "Odessa", 20, "good", TransactionType.INCOME, new Date());
         Transaction transaction1 = new Transaction(2222, "Kiev", 15, "good", TransactionType.OUTCOME, new Date());
@@ -27,5 +26,9 @@ public class Demo {
         System.out.println(controller.save(transaction4));
         System.out.println(controller.save(transaction5));
         System.out.println(controller.save(transaction6));
+        System.out.println(controller.save(transaction7));
+        System.out.println(controller.save(transaction8));
+        System.out.println(controller.save(transaction9));
+        System.out.println();
     }
 }

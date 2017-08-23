@@ -74,14 +74,23 @@ public class TransactionDAO {
             return null;
         }
 
-        int index = 0;
+        int count = 0;
         for (Transaction transaction : transactions) {
             if (transaction != null && transaction.getType() == TransactionType.INCOME && transaction.getType() == TransactionType.OUTCOME){
-                transactions[index] = transaction;
+                transactions[count] = transaction;
+            }
+            count++;
+        }
+
+        Transaction[] result = new Transaction[count];
+        int index = 0;
+        for(Transaction transaction : transactions){
+            if (transaction != null && result[index] == null){
+                result[index] = transaction;
             }
             index++;
         }
-        return transactions;
+        return result;
     }
 
     public Transaction[] transactionList(String city){
@@ -91,7 +100,7 @@ public class TransactionDAO {
 
         int index = 0;
         for (Transaction transaction : transactions) {
-            if (transaction != null && city.equals(transaction.getCity())&& transaction.getType() == TransactionType.INCOME && transaction.getType() == TransactionType.OUTCOME ){
+            if (transaction != null && city.equals(transaction.getCity())&& transaction.getType() == TransactionType.OUTCOME ){
                 transactions[index] = transaction;
             }
             index++;

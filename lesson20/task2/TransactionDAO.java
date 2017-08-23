@@ -31,7 +31,7 @@ public class TransactionDAO {
         throw new InternalServerException("Can not save this " + transaction.getId() + " transaction");
     }
 
-    public void validate(Transaction transaction) throws Exception{
+    private void validate(Transaction transaction) throws Exception{
         //сумма транзакции больше указанного лимита
         //сумма транзакций за день больше дневного лимита
         //количество транзакций за день больше указанного лимита

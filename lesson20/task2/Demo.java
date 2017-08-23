@@ -32,12 +32,12 @@ public class Demo {
         //System.out.println(controller.save(transaction9));
         //System.out.println(controller.save(transaction10));
 
-        System.out.println();
+       /* System.out.println();
         System.out.println(Arrays.toString(controller.transactionDAO.transactionList()));
         System.out.println();
         System.out.println(Arrays.toString(controller.transactionDAO.transactionList("Kiev")));
         System.out.println();
         System.out.println(Arrays.toString(controller.transactionDAO.transactionList(5)));
-
+*/
     }
 }

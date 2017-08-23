@@ -46,15 +46,15 @@ public class TransactionDAO {
 
         int sum = 0;
         int count = 0;
-        for(Transaction tr : getTransactionsPerDay(transaction.getDateCreated())){
+        for (Transaction tr : getTransactionsPerDay(transaction.getDateCreated())) {
             sum += tr.getAmount();
             count++;
         }
 
-        if (sum > utils.getLimitTransactionsPerDayAmount())
+        if (transaction.getAmount() + sum > utils.getLimitTransactionsPerDayAmount())
             throw new LimitExceeded("Transaction limit per day amount exceeded " + transaction.getId() + ". Can`t be saved");
 
-        if (count > utils.getLimitTransactionsPerDayCount())
+        if ((count + 1) > utils.getLimitTransactionsPerDayCount())
             throw new LimitExceeded("Transaction limit per day count exceeded " + transaction.getId() + ". Can`t be saved");
 
         if (!checkCity(transaction))
@@ -83,12 +83,13 @@ public class TransactionDAO {
         }
 
         Transaction[] result = new Transaction[count];
-        int index = 0;
-        for(Transaction transaction : transactions){
-            if (transaction != null && result[index] == null){
-                result[index] = transaction;
+        for (int i = 0; i < transactions.length; i++) {
+            for (int j = 0; j < result.length; j++) {
+                if (transactions[i] != null && result[j] == null && !transactions[i].equals(result[j])){
+                    result[j] = transactions[i];
+                    break;
+                }
             }
-            index++;
         }
         return result;
     }
@@ -98,14 +99,26 @@ public class TransactionDAO {
             return null;
         }
 
-        int index = 0;
+        int count = 0;
         for (Transaction transaction : transactions) {
             if (transaction != null && city.equals(transaction.getCity())&& transaction.getType() == TransactionType.OUTCOME ){
-                transactions[index] = transaction;
+                transactions[count] = transaction;
             }
-            index++;
+            count++;
         }
-        return transactions;
+
+        Transaction[] result = new Transaction[count];
+        for (int i = 0; i < transactions.length; i++) {
+            for (int j = 0; j < result.length; j++) {
+                if (transactions[i] != null && city.equals(transactions[i].getCity()) && transactions[i].getType() == TransactionType.OUTCOME ){
+                    if (result[j] == null && !transactions[i].equals(result[j])){
+                        result[j] = transactions[i];
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     public Transaction[] transactionList(int amount){

@@ -21,11 +21,6 @@ public class TransactionDAO {
 
         validate(transaction);
 
-        for (Transaction tr : transactions) {
-            if (tr != null && tr.equals(transaction)){
-                throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
-            }
-        }
 
         for(int i = 0; i < transactions.length; i++){
             if (transactions[i] == null){
@@ -33,7 +28,7 @@ public class TransactionDAO {
                 return transactions[i];
             }
         }
-        return null;
+        throw new InternalServerException("Can not save this " + transaction.getId() + " transaction");
     }
 
     public void validate(Transaction transaction) throws Exception{
@@ -42,6 +37,11 @@ public class TransactionDAO {
         //количество транзакций за день больше указанного лимита
         //если город оплаты (совершения транзакции) не разрешен
         //не хватило места
+        for (Transaction tr : transactions) {
+            if (tr != null && tr.equals(transaction)){
+                throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");
+            }
+        }
 
         if (transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
             throw new LimitExceeded("Transaction limit exceeded " + transaction.getId() + ". Can`t be saved");
@@ -64,7 +64,6 @@ public class TransactionDAO {
 
         if (checkIsFull() == 0)
             throw new InternalServerException("Can not save transaction " + transaction.getId() + " storage is full");
-
     }
 
     public Transaction[] transactionList(){

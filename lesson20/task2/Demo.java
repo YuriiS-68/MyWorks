@@ -8,10 +8,10 @@ public class Demo {
 
         Controller controller = new Controller();
 
-        Transaction transaction = new Transaction(1111, "Odessa", 15, "good", TransactionType.INCOME, new Date());
-        Transaction transaction1 = new Transaction(2222, "Kiev", 35, "good", TransactionType.OUTCOME, new Date());
-        Transaction transaction2 = new Transaction(3333, "Odessa", 35, "good", TransactionType.INCOME, new Date());
-        Transaction transaction3 = new Transaction(4444, "Odessa", 15, "good", TransactionType.OUTCOME, new Date());
+        Transaction transaction = new Transaction(1111, "Odessa", 25, "good", TransactionType.INCOME, new Date());
+        Transaction transaction1 = new Transaction(2222, "Kiev", 40, "good", TransactionType.OUTCOME, new Date());
+        Transaction transaction2 = new Transaction(3333, "Odessa", 25, "good", TransactionType.INCOME, new Date());
+        Transaction transaction3 = new Transaction(4444, "Odessa", 10, "good", TransactionType.OUTCOME, new Date());
         Transaction transaction4 = new Transaction(5555, "Odessa", 5, "good", TransactionType.INCOME, new Date());
         Transaction transaction5 = new Transaction(6666, "Kiev", 10, "good", TransactionType.OUTCOME, new Date());
         Transaction transaction6 = new Transaction(7777, "Odessa", 5, "good", TransactionType.INCOME, new Date());

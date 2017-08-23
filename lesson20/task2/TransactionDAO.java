@@ -19,8 +19,7 @@ public class TransactionDAO {
         if (transaction == null)
             throw new BadRequestException("unexpected error");
 
-        if (!validate(transaction))
-            throw new InternalServerException("unexpected error");
+        validate(transaction);
 
         int index = 0;
         for(Transaction tr : transactions){
@@ -33,7 +32,7 @@ public class TransactionDAO {
         return transactions[index];
     }
 
-    public boolean validate(Transaction transaction) throws Exception{
+    public void validate(Transaction transaction) throws Exception{
         //сумма транзакции больше указанного лимита
         //сумма транзакций за день больше дневного лимита
         //количество транзакций за день больше указанного лимита
@@ -64,8 +63,6 @@ public class TransactionDAO {
 
         if (!checkIsFull(transactions))
             throw new InternalServerException("Can not save transaction " + transaction.getId() + " storage is full");
-
-        return true;
     }
 
     public Transaction[] transactionList(){

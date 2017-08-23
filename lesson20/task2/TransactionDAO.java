@@ -81,7 +81,6 @@ public class TransactionDAO {
             }
         }
 
-        System.out.println(count);
         Transaction[] result = new Transaction[count];
         int index = 0;
         for (Transaction tr : transactions) {

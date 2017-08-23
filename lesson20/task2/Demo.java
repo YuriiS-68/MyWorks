@@ -23,21 +23,19 @@ public class Demo {
         System.out.println(controller.save(transaction));
         System.out.println(controller.save(transaction1));
         System.out.println(controller.save(transaction2));
-        System.out.println(controller.save(transaction3));
-        System.out.println(controller.save(transaction4));
-        System.out.println(controller.save(transaction5));
+        //System.out.println(controller.save(transaction3));
+        //System.out.println(controller.save(transaction4));
+        //System.out.println(controller.save(transaction5));
         //System.out.println(controller.save(transaction6));
         //System.out.println(controller.save(transaction7));
         //System.out.println(controller.save(transaction8));
         //System.out.println(controller.save(transaction9));
         //System.out.println(controller.save(transaction10));
 
+        /*System.out.println();
+        System.out.println(Arrays.toString(controller.transactionDAO.transactionList()));
         System.out.println();
-        controller.transactionList();
-        //System.out.println(Arrays.toString(controller.transactionDAO.transactionList()));
-        System.out.println();
-        //controller.transactionList("Kiev");
-        //System.out.println(Arrays.toString(controller.transactionDAO.transactionList("Odessa")));
-
+        System.out.println(Arrays.toString(controller.transactionDAO.transactionList("Kiev")));
+*/
     }
 }

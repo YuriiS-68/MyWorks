@@ -14,11 +14,11 @@ public class Controller {
 
     public Transaction[] transactionList(String city){
 
-        return transactionDAO.transactionList();
+        return transactionDAO.transactionList(city);
     }
 
     public Transaction[] transactionList(int amount){
 
-        return transactionDAO.transactionList();
+        return transactionDAO.transactionList(amount);
     }
 }

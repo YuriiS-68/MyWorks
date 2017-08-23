@@ -100,22 +100,18 @@ public class TransactionDAO {
 
         int count = 0;
         for (Transaction transaction : transactions) {
-            if (transaction != null && city.equals(transaction.getCity())&& transaction.getType() == TransactionType.OUTCOME ){
-                transactions[count] = transaction;
+            if (transaction != null && city.equals(transaction.getCity())){
+                count++;
             }
-            count++;
         }
 
         Transaction[] result = new Transaction[count];
-        for (int i = 0; i < transactions.length; i++) {
-            for (int j = 0; j < result.length; j++) {
-                if (transactions[i] != null && city.equals(transactions[i].getCity()) && transactions[i].getType() == TransactionType.OUTCOME ){
-                    if (result[j] == null && !transactions[i].equals(result[j])){
-                        result[j] = transactions[i];
-                        break;
-                    }
-                }
+        int index = 0;
+        for (Transaction tr : transactions) {
+            if (tr != null && tr.getCity().equals(city)){
+                result[index] = tr;
             }
+            index++;
         }
         return result;
     }
@@ -125,14 +121,22 @@ public class TransactionDAO {
             return null;
         }
 
-        int index = 0;
+        int count = 0;
         for (Transaction transaction : transactions) {
-            if (transaction != null && amount == transaction.getAmount() && transaction.getType() == TransactionType.INCOME && transaction.getType() == TransactionType.OUTCOME){
-                transactions[index] = transaction;
+            if (transaction != null && transaction.getAmount() == amount){
+                count++;
+            }
+        }
+
+        Transaction[] result = new Transaction[count];
+        int index = 0;
+        for (Transaction tr : transactions) {
+            if (tr != null && amount == tr.getAmount()){
+                result[index] = tr;
             }
             index++;
         }
-        return transactions;
+        return result;
     }
 
 

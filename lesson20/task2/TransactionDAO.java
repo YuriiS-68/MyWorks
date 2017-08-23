@@ -20,12 +20,12 @@ public class TransactionDAO {
         if (transaction == null)
             throw new BadRequestException("unexpected error");
 
-        //if (!validate(transaction))
-         //   throw new InternalServerException("unexpected error");
+        if (!validate(transaction))
+            throw new InternalServerException("unexpected error");
 
         int index = 0;
         for(Transaction tr : transactions){
-            if (!validate(transaction) && tr == null){
+            if (tr == null){
                 transactions[index] = transaction;
                 break;
             }

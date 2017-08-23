@@ -57,7 +57,7 @@ public class TransactionDAO {
             throw new LimitExceeded("Transaction limit per day count exceeded " + transaction.getId() + ". Can`t be saved");
 
         if (!checkCity(transaction))
-            throw new BadRequestException("A transaction from city: " + transaction.getCity() + " is not possible");
+            throw new BadRequestException("A transaction " + transaction.getCity() + " from city: " + transaction.getCity() + " is not possible");
 
         if (checkTransaction(transactions, transaction))
             throw new BadRequestException("Such transaction " + transaction.getId() + " already exists");

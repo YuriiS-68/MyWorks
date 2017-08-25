@@ -7,13 +7,13 @@ public class TransactionDAO {
 
     private static Transaction[] transactions = new Transaction[10];
 
-    public static Transaction[] getTransactions() {
+    public Transaction[] getTransactions() {
         return transactions;
     }
 
-    private static Utils utils = new Utils();
+    private Utils utils = new Utils();
 
-    public static Transaction save(Transaction transaction) throws Exception{
+    public Transaction save(Transaction transaction) throws Exception{
         //если транзакция проходит валидацию, то сохранять
         //проверить есть ли уже такая транзакция в массиве и если нет, то сохранить
         if (transaction == null)
@@ -30,7 +30,7 @@ public class TransactionDAO {
         throw new InternalServerException("Can not save this " + transaction.getId() + " transaction");
     }
 
-    private static void validate(Transaction transaction) throws Exception{
+    private void validate(Transaction transaction) throws Exception{
         //сумма транзакции больше указанного лимита
         //сумма транзакций за день больше дневного лимита
         //количество транзакций за день больше указанного лимита
@@ -65,7 +65,7 @@ public class TransactionDAO {
             throw new InternalServerException("Can not save transaction " + transaction.getId() + " storage is full");
     }
 
-    public static Transaction[] transactionList(){
+    public Transaction[] transactionList(){
         if (transactions == null){
             return null;
         }
@@ -88,7 +88,7 @@ public class TransactionDAO {
         return result;
     }
 
-    public static Transaction[] transactionList(String city){
+    public Transaction[] transactionList(String city){
         if (transactions == null || city == null){
             return null;
         }
@@ -111,7 +111,7 @@ public class TransactionDAO {
         return result;
     }
 
-    public static Transaction[] transactionList(int amount){
+    public Transaction[] transactionList(int amount){
         if (transactions == null || amount == 0){
             return null;
         }
@@ -183,7 +183,7 @@ public class TransactionDAO {
         return countNull;
     }
 
-    private static boolean checkCity(Transaction transaction){
+    private boolean checkCity(Transaction transaction){
         if (transaction == null){
             return false;
         }

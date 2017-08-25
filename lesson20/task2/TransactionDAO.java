@@ -60,7 +60,7 @@ public class TransactionDAO {
             throw new LimitExceeded("Transaction limit per day count exceeded " + transaction.getId() + ". Can`t be saved");
 
         if (!checkCity(transaction))
-            throw new BadRequestException("A transaction " + transaction.getCity() + " from city: " + transaction.getCity() + " is not possible");
+            throw new BadRequestException("A transaction " + transaction.getId() + " from city: " + transaction.getCity() + " is not possible");
 
         if (checkIsFull() == 0)
             throw new InternalServerException("Can not save transaction " + transaction.getId() + " storage is full");

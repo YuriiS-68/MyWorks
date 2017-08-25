@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class TransactionDAO {
 
-    private static Transaction[] transactions = new Transaction[10];
+    private Transaction[] transactions = new Transaction[10];
 
     public Transaction[] getTransactions() {
         return transactions;
@@ -135,7 +135,7 @@ public class TransactionDAO {
     }
 
 
-    public static Transaction[] getTransactionsPerDay(Date dateOfCurTransaction){
+    public Transaction[] getTransactionsPerDay(Date dateOfCurTransaction){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateOfCurTransaction);
 
@@ -171,7 +171,7 @@ public class TransactionDAO {
         return result;
     }
 
-    private static int checkIsFull(){
+    private int checkIsFull(){
         int index = 0;
         int countNull = 0;
         for (Transaction transaction : transactions) {

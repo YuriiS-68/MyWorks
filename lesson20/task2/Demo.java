@@ -6,7 +6,7 @@ import java.util.Date;
 public class Demo {
     public static void main(String[] args)throws Exception {
 
-        Controller controller = new Controller();
+        //Controller controller = new Controller();
 
         Transaction transaction = new Transaction(1111, "Odessa", 25, "good", TransactionType.INCOME, new Date());
         Transaction transaction1 = new Transaction(2222, "Kiev", 40, "good", TransactionType.OUTCOME, new Date());
@@ -20,10 +20,10 @@ public class Demo {
         Transaction transaction9 = new Transaction(1010, "Odessa", 5, "good", TransactionType.OUTCOME, new Date());
         Transaction transaction10 = null;
 
-        System.out.println(controller.save(transaction));
-        System.out.println(controller.save(transaction1));
-        System.out.println(controller.save(transaction2));
-        System.out.println(controller.save(transaction3));
+        System.out.println(Controller.save(transaction));
+        System.out.println(Controller.save(transaction1));
+        System.out.println(Controller.save(transaction2));
+        System.out.println(Controller.save(transaction3));
         //System.out.println(controller.save(transaction4));
         //System.out.println(controller.save(transaction5));
         //System.out.println(controller.save(transaction6));

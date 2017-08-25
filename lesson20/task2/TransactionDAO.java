@@ -5,22 +5,21 @@ import java.util.Date;
 
 public class TransactionDAO {
 
-    private Transaction[] transactions = new Transaction[10];
+    private static Transaction[] transactions = new Transaction[10];
 
-    public Transaction[] getTransactions() {
+    public static Transaction[] getTransactions() {
         return transactions;
     }
 
-    private Utils utils = new Utils();
+    private static Utils utils = new Utils();
 
-    public Transaction save(Transaction transaction) throws Exception{
+    public static Transaction save(Transaction transaction) throws Exception{
         //если транзакция проходит валидацию, то сохранять
         //проверить есть ли уже такая транзакция в массиве и если нет, то сохранить
         if (transaction == null)
             throw new BadRequestException("NullPointer");
 
         validate(transaction);
-
 
         for(int i = 0; i < transactions.length; i++){
             if (transactions[i] == null){
@@ -31,7 +30,7 @@ public class TransactionDAO {
         throw new InternalServerException("Can not save this " + transaction.getId() + " transaction");
     }
 
-    private void validate(Transaction transaction) throws Exception{
+    private static void validate(Transaction transaction) throws Exception{
         //сумма транзакции больше указанного лимита
         //сумма транзакций за день больше дневного лимита
         //количество транзакций за день больше указанного лимита
@@ -66,7 +65,7 @@ public class TransactionDAO {
             throw new InternalServerException("Can not save transaction " + transaction.getId() + " storage is full");
     }
 
-    public Transaction[] transactionList(){
+    public static Transaction[] transactionList(){
         if (transactions == null){
             return null;
         }
@@ -89,7 +88,7 @@ public class TransactionDAO {
         return result;
     }
 
-    public Transaction[] transactionList(String city){
+    public static Transaction[] transactionList(String city){
         if (transactions == null || city == null){
             return null;
         }
@@ -112,7 +111,7 @@ public class TransactionDAO {
         return result;
     }
 
-    public Transaction[] transactionList(int amount){
+    public static Transaction[] transactionList(int amount){
         if (transactions == null || amount == 0){
             return null;
         }
@@ -136,7 +135,7 @@ public class TransactionDAO {
     }
 
 
-    public Transaction[] getTransactionsPerDay(Date dateOfCurTransaction){
+    public static Transaction[] getTransactionsPerDay(Date dateOfCurTransaction){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateOfCurTransaction);
 
@@ -172,7 +171,7 @@ public class TransactionDAO {
         return result;
     }
 
-    private int checkIsFull(){
+    private static int checkIsFull(){
         int index = 0;
         int countNull = 0;
         for (Transaction transaction : transactions) {
@@ -184,7 +183,7 @@ public class TransactionDAO {
         return countNull;
     }
 
-    private boolean checkCity(Transaction transaction){
+    private static boolean checkCity(Transaction transaction){
         if (transaction == null){
             return false;
         }

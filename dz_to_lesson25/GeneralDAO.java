@@ -8,7 +8,7 @@ public class GeneralDAO <T>{
         if (t == null || array == null)
             throw new Exception("Can not saving object: " + t.toString());
 
-        if (checkIsFull(array))
+        if (checkIsFull() == 0)
             throw new Exception("No free space to save");
 
         if (checkValidateObject(t))
@@ -32,19 +32,16 @@ public class GeneralDAO <T>{
         return array;
     }
 
-    private boolean checkIsFull(T[] array){
-        if (array == null){
-            return false;
-        }
-
+    private int checkIsFull(){
         int index = 0;
+        int countNull = 0;
         for(T el : array){
-            if (el != null){
-                return true;
+            if (el == null){
+                countNull++;
             }
             index++;
         }
-        return false;
+        return countNull;
     }
 
     private boolean checkValidateObject(T t){
@@ -54,7 +51,7 @@ public class GeneralDAO <T>{
 
         int index = 0;
         for(T el : array){
-            if (el != null && !el.equals(t)){
+            if (el != null && el.equals(t)){
                 return true;
             }
             index++;
